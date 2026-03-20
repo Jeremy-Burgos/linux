@@ -1,40 +1,131 @@
 # 02 – Processes, Searching, and Filtering
 
-## Finding files
+A hardened system is not just one with fewer services.
 
-Search entire filesystem (slow, noisy):
+It is one where you can quickly answer:
+
+- what files exist
+- what processes are running
+- which of those processes matter
+- whether the thing you are looking at is expected
+
+This section covers simple but high-value visibility commands.
+
+## 1. Finding files with `find`
+
+Search from the root of the filesystem for a regular file by name:
 
 ```bash
 find / -type f -name <query>
 ````
 
-Fast indexed lookup (may lag reality):
+Example:
 
 ```bash
-locate <name>
+find / -type f -name sshd_config
 ```
 
-## Wildcards
+This is slow, but direct.
 
-* `?` single character
-* `[]` character ranges
-* `*` any length
+Use `find` when you care about correctness more than convenience.
 
-Used incorrectly, wildcards cause catastrophic deletes. Respect them.
+## 2. Wildcards
 
-## Process visibility
+Wildcards help match patterns in filenames and arguments.
 
-List processes:
+Single character:
+
+```text
+?
+```
+
+Character class:
+
+```text
+[]
+```
+
+Any length:
+
+```text
+*
+```
+
+Examples:
+
+```bash
+ls *.conf
+ls ssh?.service
+ls /etc/ssh/sshd_config.d/*.conf
+```
+
+Wildcards are useful. They are also dangerous when used with deletion or move commands. Expand them mentally before you trust them.
+
+## 3. Process inspection with `ps`
+
+Show basic process information:
 
 ```bash
 ps
+```
+
+Show a fuller process view:
+
+```bash
 ps aux
 ```
 
-Filter processes:
+This is a standard baseline view of what is currently running.
+
+## 4. Filtering process output with `grep`
+
+Search process output for a keyword:
 
 ```bash
 ps aux | grep python3
 ```
 
-Never trust grep alone. Validate PID and parent process.
+This is useful for quick filtering, but remember:
+
+* `grep` can match itself
+* a matching name is not the same as a trustworthy process
+* you still need to inspect PID, user, parent process, and path where relevant
+
+## 5. Piping output
+
+The pipe operator sends the output of one command to another:
+
+```text
+|
+```
+
+Example:
+
+```bash
+ps aux | grep ssh
+```
+
+This is foundational to Linux inspection work.
+
+## 6. Practical workflow
+
+When investigating a service, process, or configuration file, a simple pattern is:
+
+1. find the file
+2. inspect the process list
+3. filter output for what matters
+4. correlate the result with what the host is supposed to do
+
+Examples:
+
+```bash
+find / -type f -name sshd_config
+ps aux | grep ssh
+locate fail2ban
+```
+
+## Bottom line
+
+Linux hardening depends on visibility.
+
+You cannot minimize what you cannot find, and you cannot trust what you have not inspected.

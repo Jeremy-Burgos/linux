@@ -1,112 +1,150 @@
-# 13 – Fail2ban: Basic Intrusion Rate-Limiting
+# 13 – Fail2ban
 
-Firewalls decide **who can talk to you**. Fail2ban decides **how many chances they get** before they are cut off.
+Fail2ban is useful when a host intentionally exposes services that attackers can hammer with repeated authentication attempts or noisy probing.
 
-On a hardened Linux system that exposes any service (SSH, web, etc.), fail2ban is a practical way to rate-limit brute-force and noisy probing.
+It is not a magic firewall, and it is not equally useful on every Linux system.
 
-## 1. Install fail2ban
+A workstation with no inbound services gains little from it.
 
-On Debian/Ubuntu:
+A server with exposed SSH may gain a lot from it.
+
+## 1. What Fail2ban does
+
+Fail2ban watches logs for patterns such as repeated authentication failures and responds by applying temporary bans.
+
+Its value is practical:
+
+- it raises the cost of brute-force attempts
+- it reduces repeated noise from abusive clients
+- it gives you a simple control loop for exposed services
+
+It does not replace:
+
+- good SSH configuration
+- service minimization
+- strong authentication
+- sane firewall policy
+
+## 2. Install Fail2ban
+
+Install the package:
 
 ```bash
 sudo apt-get update
 sudo apt-get install fail2ban
 ````
 
-Service should start automatically:
+Check service status:
 
 ```bash
 sudo systemctl status fail2ban
 ```
 
-## 2. Do not edit jail.conf directly
+## 3. Configuration model
 
-Default config file:
+The packaged default configuration lives in:
 
-```bash
+```text
 /etc/fail2ban/jail.conf
 ```
 
-Leave it alone. Instead create:
+Do not edit that file directly.
+
+Use local overrides instead.
+
+Create:
 
 ```bash
-sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
+sudo nano /etc/fail2ban/jail.local
 ```
 
-`jail.local` overrides defaults in a minimal, trackable way.
+This keeps your changes clean and easier to maintain.
 
-## 3. Basic SSH jail (when SSH is exposed)
+## 4. Minimal SSH example
 
-If you **intentionally** expose SSH (e.g. on a server, or internal admin machine), a minimal jail might look like:
-
-```ini
-[sshd]
-enabled  = true
-port     = ssh
-filter   = sshd
-logpath  = /var/log/auth.log
-maxretry = 5
-bantime  = 3600
-findtime = 600
-```
-
-* `maxretry` – how many failures before ban
-* `findtime` – window in seconds to observe failures
-* `bantime` – ban duration in seconds
-
-On a public-facing host with SSH, consider stricter settings and key-based auth only.
-
-## 4. Integration with UFW
-
-By default, fail2ban uses `iptables` actions. On systems where you standardized on UFW, you can use UFW-aware actions.
-
-In `jail.local`:
+For a host that intentionally exposes SSH, a basic jail might look like this:
 
 ```ini
 [DEFAULT]
 banaction = ufw
+bantime   = 1h
+findtime  = 10m
+maxretry  = 5
+
+[sshd]
+enabled = true
 ```
 
-Or use one of the more specific UFW actions defined in `/etc/fail2ban/action.d/`, such as `ufw` or `ufw-reject`.
+This says:
 
-This makes fail2ban insert rules into UFW rather than managing iptables independently.
+* use UFW for bans
+* ban for one hour
+* count failures over ten minutes
+* ban after five failures
+* apply the jail to SSH
 
-## 5. Example desktop/server split
+This is a practical starting point, not a universal setting.
 
-* On a **workstation** with UFW set to:
+## 5. Restart and verify
 
-  * deny incoming
-  * allow outgoing
-  * no exposed SSH
-
-  fail2ban adds very little value; there is nothing to attack externally.
-
-* On a **server** or admin box where SSH or HTTP(S) is intentionally exposed, fail2ban is useful:
-
-  * Rate-limits brute-force attempts
-  * Provides logs of abusive IPs
-  * Can feed into other tooling (block lists, SIEM, etc.)
-
-Do not deploy fail2ban just to tick a box. Deploy it where it actually has something to protect.
-
-## 6. Monitoring
-
-Check current jails:
-
-```bash
-sudo fail2ban-client status
-```
-
-Check a specific jail:
-
-```bash
-sudo fail2ban-client status sshd
-```
-
-Restart after changes:
+After creating or changing `jail.local`:
 
 ```bash
 sudo systemctl restart fail2ban
 ```
 
-Fail2ban is not a silver bullet. It just makes abuse more expensive.
+Check global status:
+
+```bash
+sudo fail2ban-client status
+```
+
+Check the SSH jail specifically:
+
+```bash
+sudo fail2ban-client status sshd
+```
+
+If you are using UFW integration, also review:
+
+```bash
+sudo ufw status numbered
+```
+
+## 6. When to use it
+
+Fail2ban makes the most sense on hosts that:
+
+* intentionally expose SSH
+* expose login-backed web services
+* receive real inbound abuse and probing
+* are small enough that a lightweight local control is practical
+
+## 7. When it adds little value
+
+Fail2ban adds much less value on:
+
+* local-only workstations
+* systems with no inbound exposure
+* hosts where the service itself should have been disabled instead
+
+Do not install it just to say you have it.
+
+## 8. Practical workflow
+
+On a server that exposes SSH:
+
+1. verify the host actually needs SSH exposed
+2. harden SSH configuration first
+3. apply minimal UFW rules
+4. add a Fail2ban SSH jail
+5. verify jail status
+6. monitor whether it is doing useful work
+
+That is the right order.
+
+## Bottom line
+
+Fail2ban is worth using when a host has real inbound exposure.
+
+It is not a substitute for reducing attack surface in the first place.
