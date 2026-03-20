@@ -1,62 +1,112 @@
 # Linux Privacy & Hardening Toolkit
 
-A practical, command-driven hardening baseline for Debian and Ubuntu systems.
+A practical, Debian/Ubuntu-focused hardening repository for people who want visibility, verification, and sane operational security without blind automation.
 
-This repository is designed for defenders, researchers, and privacy-conscious users who want **visibility, control, and verification**, not blind automation.
+This project is designed for:
 
-Nothing here should be applied without understanding what it does.
+- privacy-conscious Linux users
+- defenders and researchers
+- administrators who want a cleaner baseline
+- users who prefer explicit control over defaults
+
+This repository is not a one-click hardening script.
+
+It is a structured set of guides, checklists, and example scripts for building a tighter Debian or Ubuntu workstation or small server baseline.
 
 ## Scope
 
-This toolkit covers:
+This repository covers:
 
-- Core Linux command-line literacy
-- Process inspection and filtering
-- File and directory manipulation
-- Package management and updates
-- Kernel introspection and module control
-- Firewalling with UFW
-- System auditing with Lynis
-- CIS-aligned filesystem, service, SSH, and kernel hardening
-- Explicit tradeoffs and rationale for each control
+- core Linux command-line literacy
+- process inspection and filtering
+- file and directory handling
+- APT-based package management
+- kernel and module inspection
+- firewalling with UFW
+- auditing with Lynis
+- filesystem hardening
+- service minimization
+- SSH hardening
+- kernel tuning with `sysctl.d`
+- AppArmor and SELinux context
+- Fail2ban for exposed services
+- role-based workstation and server baselines
 
 Primary target:
 
 - Debian
-- Ubuntu and Ubuntu-derived systems
+- Ubuntu
+- Debian- and Ubuntu-like systems using APT and systemd
 
-Secondary compatibility:
-
-- Other systemd-based distributions (with adaptation)
+This repository is not written as a generic guide for every Linux distribution.
 
 ## Philosophy
 
-- No one-size-fits-all scripts
-- Explicit trust boundaries
-- Assume compromise is possible
-- Prefer detection and verification over assumptions
+Core assumptions:
+
+1. Linux defaults are not automatically secure enough.
+2. Fewer enabled services means fewer mistakes and fewer attack paths.
+3. Visibility matters as much as blocking.
+4. Verification matters more than checklist hardening.
+5. Workstations and internet-facing servers should not be hardened the same way.
 
 ## Quick start
 
+Clone the repository:
+
 ```bash
-git clone https://github.com/TheGreenArrow22/linux.git
+git clone https://github.com/Jeremy-Burgos/linux.git
 cd linux
 ````
 
 Start here:
 
 ```bash
-open docs/00-overview.md
+less docs/00-overview.md
 ```
 
-Apply sections selectively according to your threat model.
+Then read:
+
+```text
+QUICKSTART.md
+THREAT_MODEL.md
+TESTED_ON.md
+```
+
+## Suggested reading order
+
+For most users:
+
+1. [`QUICKSTART.md`](QUICKSTART.md)
+2. [`THREAT_MODEL.md`](THREAT_MODEL.md)
+3. [`docs/06-firewall-and-networking.md`](docs/06-firewall-and-networking.md)
+4. [`docs/09-services-and-boot-hardening.md`](docs/09-services-and-boot-hardening.md)
+5. [`docs/10-ssh-and-authentication.md`](docs/10-ssh-and-authentication.md)
+6. [`docs/11-kernel-tuning.md`](docs/11-kernel-tuning.md)
+
+## Scripts
+
+Example scripts live under:
+
+```text
+scripts/
+```
+
+They are examples, not blind hardening wrappers.
+
+Read them before running them.
 
 ## Disclaimer
 
-Some controls in this repository:
+Some controls in this repository can:
 
-* Disable services
-* Restrict networking
-* Modify kernel behavior
+* break connectivity
+* disable services you still need
+* lock you out of remote systems
+* interfere with role-specific workloads
 
-Test everything in a VM before touching production or personal machines.
+Test everything before applying it to production, remote hosts, or primary machines.
+
+## About
+
+A practical, Linux hardening toolkit for Debian and Ubuntu systems, focused on visibility, least privilege, firewalling, mandatory access control, auditing, and defending everyday workstations and servers without blind automation.
