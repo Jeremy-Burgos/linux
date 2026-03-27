@@ -99,11 +99,15 @@ Check global status:
 sudo fail2ban-client status
 ```
 
+![Fail2ban overall status example](../assets/screenshots/tools/linux-fail2ban-client-status.png)
+
 Check the SSH jail specifically:
 
 ```bash
 sudo fail2ban-client status sshd
 ```
+
+![Fail2ban SSH jail status example](../assets/screenshots/tools/linux-fail2ban-sshd-jail-status.png)
 
 If you are using UFW integration, also review:
 

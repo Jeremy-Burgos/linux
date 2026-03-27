@@ -16,6 +16,8 @@ Check whether anything is listening on port 22:
 ss -tulpen | grep ':22'
 ````
 
+![SSH port 22 listening check](../assets/screenshots/ssh/linux-ss-tulpen-port22-check.png)
+
 Check whether the SSH service is enabled:
 
 ```bash
@@ -199,6 +201,10 @@ Then inspect the effective values you care about:
 ```bash
 sudo sshd -T | egrep 'permitrootlogin|permitemptypasswords|ignorerhosts|hostbasedauthentication|pubkeyauthentication|passwordauthentication|kbdinteractiveauthentication|x11forwarding|allowagentforwarding|allowtcpforwarding|maxauthtries|logingracetime|clientaliveinterval|clientalivecountmax'
 ```
+
+
+![Effective sshd configuration example](../assets/screenshots/ssh/linux-sshd-T-effective-config.png)
+
 
 Do not reload the service until the config validates.
 

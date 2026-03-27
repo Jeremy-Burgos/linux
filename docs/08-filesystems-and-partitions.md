@@ -96,6 +96,8 @@ For a more compact view:
 findmnt -o TARGET,SOURCE,FSTYPE,OPTIONS
 ```
 
+![findmnt target, source, filesystem, and options example](../assets/screenshots/filesystem/linux-findmnt-target-source-options.png)
+
 This lets you compare:
 
 * the intended persistent config in `/etc/fstab`

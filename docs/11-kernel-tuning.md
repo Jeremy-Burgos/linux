@@ -131,6 +131,8 @@ net.ipv4.conf.all.rp_filter = 1
 net.ipv4.conf.default.rp_filter = 1
 ```
 
+![sysctl hardening file example](../assets/screenshots/kernel/linux-etc-sysctl-d-99-hardening-conf.png)
+
 Keep the file narrow and intentional. Do not dump fifty unrelated sysctl values into it because a random benchmark did.
 
 ## 6. Apply the persistent configuration

@@ -37,7 +37,11 @@ Run a local audit:
 sudo lynis audit system
 ```
 
+![Lynis audit output example](../assets/screenshots/auditing/linux-lynis-audit-system.png)
+
 This will inspect a wide range of system settings and generate findings, suggestions, and warnings.
+
+![Lynis audit summary example](../assets/screenshots/auditing/linux-lynis-audit-system-summary.png)
 
 ## 4. How to interpret results
 

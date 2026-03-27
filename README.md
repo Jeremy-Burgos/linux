@@ -40,15 +40,17 @@ Primary target:
 
 This repository is not written as a generic guide for every Linux distribution.
 
-## Philosophy
+## Start here
 
-Core assumptions:
+Read these files first:
 
-1. Linux defaults are not automatically secure enough.
-2. Fewer enabled services means fewer mistakes and fewer attack paths.
-3. Visibility matters as much as blocking.
-4. Verification matters more than checklist hardening.
-5. Workstations and internet-facing servers should not be hardened the same way.
+- [QUICKSTART.md](QUICKSTART.md)
+- [THREAT_MODEL.md](THREAT_MODEL.md)
+- [TESTED_ON.md](TESTED_ON.md)
+- [SECURITY.md](SECURITY.md)
+- [CHANGELOG.md](CHANGELOG.md)
+
+Then move into the numbered guides under `docs/`.
 
 ## Quick start
 
@@ -59,30 +61,72 @@ git clone https://github.com/Jeremy-Burgos/linux.git
 cd linux
 ````
 
-Start here:
+Open the overview:
 
 ```bash
 less docs/00-overview.md
 ```
 
-Then read:
+Good first sections to review:
+
+* [docs/06-firewall-and-networking.md](docs/06-firewall-and-networking.md)
+* [docs/09-services-and-boot-hardening.md](docs/09-services-and-boot-hardening.md)
+* [docs/10-ssh-and-authentication.md](docs/10-ssh-and-authentication.md)
+* [docs/11-kernel-tuning.md](docs/11-kernel-tuning.md)
+
+The scripts under `scripts/` are examples only. Read them before running them.
+
+## Repository structure
 
 ```text
-QUICKSTART.md
-THREAT_MODEL.md
-TESTED_ON.md
+linux/
+├── README.md
+├── QUICKSTART.md
+├── CHANGELOG.md
+├── LICENSE
+├── SECURITY.md
+├── TESTED_ON.md
+├── THREAT_MODEL.md
+├── .editorconfig
+├── .markdownlint.json
+├── docs/
+└── scripts/
 ```
 
-## Suggested reading order
+## Suggested reading paths
 
-For most users:
+### Workstation baseline
 
-1. `QUICKSTART.md`
-2. `THREAT_MODEL.md`
-3. `docs/06-firewall-and-networking.md`
-4. `docs/09-services-and-boot-hardening.md`
-5. `docs/10-ssh-and-authentication.md`
-6. `docs/11-kernel-tuning.md`
+Start with:
+
+* [QUICKSTART.md](QUICKSTART.md)
+* [docs/06-firewall-and-networking.md](docs/06-firewall-and-networking.md)
+* [docs/07-system-auditing-and-lynis.md](docs/07-system-auditing-and-lynis.md)
+* [docs/09-services-and-boot-hardening.md](docs/09-services-and-boot-hardening.md)
+* [docs/11-kernel-tuning.md](docs/11-kernel-tuning.md)
+* [docs/workstation-baseline-checklist.md](docs/workstation-baseline-checklist.md)
+
+### Server baseline
+
+Start with:
+
+* [QUICKSTART.md](QUICKSTART.md)
+* [docs/06-firewall-and-networking.md](docs/06-firewall-and-networking.md)
+* [docs/09-services-and-boot-hardening.md](docs/09-services-and-boot-hardening.md)
+* [docs/10-ssh-and-authentication.md](docs/10-ssh-and-authentication.md)
+* [docs/11-kernel-tuning.md](docs/11-kernel-tuning.md)
+* [docs/13-fail2ban.md](docs/13-fail2ban.md)
+* [docs/server-baseline-checklist.md](docs/server-baseline-checklist.md)
+
+## Philosophy
+
+Core assumptions:
+
+1. Linux defaults are not automatically secure enough.
+2. Fewer enabled services means fewer mistakes and fewer attack paths.
+3. Visibility matters as much as blocking.
+4. Verification matters more than checklist hardening.
+5. Workstations and internet-facing servers should not be hardened the same way.
 
 ## Scripts
 
@@ -94,7 +138,12 @@ scripts/
 
 They are examples, not blind hardening wrappers.
 
-Read them before running them.
+Included examples:
+
+* `ufw_desktop_baseline.sh`
+* `fail2ban_sshd_example.sh`
+* `sysctl_endpoint_baseline.sh`
+* `service_review.sh`
 
 ## Disclaimer
 
@@ -109,4 +158,4 @@ Test everything before applying it to production, remote hosts, or primary machi
 
 ## About
 
-A practical, CIS-aligned Linux hardening toolkit for Debian and Ubuntu systems, focused on visibility, least privilege, firewalling, mandatory access control, auditing, and defending everyday workstations and servers without blind automation.
+A practical, Debian/Ubuntu-focused Linux hardening repository for people who want visibility, verification, and a cleaner workstation or server baseline without blind automation.

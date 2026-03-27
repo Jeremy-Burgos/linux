@@ -31,6 +31,8 @@ Inspect current AppArmor status:
 sudo aa-status
 ````
 
+![AppArmor status overview](../assets/screenshots/tools/linux-aa-status-overview.png)
+
 This helps show:
 
 * whether AppArmor is enabled
@@ -119,6 +121,8 @@ For AppArmor-related messages, review kernel or journal output:
 ```bash
 sudo journalctl -k | grep -i apparmor
 ```
+
+![AppArmor journal review example](../assets/screenshots/tools/linux-apparmor-journalctl-example.png)
 
 or:
 

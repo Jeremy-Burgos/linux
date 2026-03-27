@@ -45,6 +45,8 @@ Check status before making changes:
 sudo ufw status verbose
 ```
 
+![UFW workstation status example](../assets/screenshots/firewall/linux-ufw-workstation-status-numbered.png)
+
 ## 3. Inspect what is listening before writing rules
 
 Before applying firewall rules, inspect the host:
@@ -52,6 +54,8 @@ Before applying firewall rules, inspect the host:
 ```bash
 ss -tulpen
 ```
+
+![Listening sockets review with ss](../assets/screenshots/readme/linux-ss-tulpen.png)
 
 This tells you what is actually listening, including:
 
@@ -94,11 +98,15 @@ sudo ufw status verbose
 sudo ufw status numbered
 ```
 
+![UFW server status example](../assets/screenshots/firewall/linux-ufw-server-status-numbered.png)
+
 Then inspect live listeners again:
 
 ```bash
 ss -tulpen
 ```
+
+![Listening sockets review with ss](../assets/screenshots/readme/linux-ss-tulpen.png)
 
 A good workstation result is usually:
 

@@ -94,6 +94,8 @@ For a narrower view of enabled service units:
 systemctl list-unit-files --type=service --state=enabled
 ```
 
+![Enabled service units example](../assets/screenshots/services/linux-systemctl-enabled-services.png)
+
 This is your starting inventory, not your final verdict.
 
 A service being enabled does not automatically mean it is harmful. It does mean it deserves explanation.
@@ -105,6 +107,8 @@ List running services:
 ```bash
 systemctl list-units --type=service --state=running
 ```
+
+![Running service units example](../assets/screenshots/services/linux-systemctl-running-services.png)
 
 This is different from enabled-at-boot state.
 
