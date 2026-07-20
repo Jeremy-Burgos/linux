@@ -57,8 +57,8 @@ Then move into the numbered guides under `docs/`.
 Clone the repository:
 
 ```bash
-git clone https://github.com/Jeremy-Burgos/linux.git
-cd linux
+git clone https://github.com/Jeremy-Burgos/linux-hardening-baseline.git
+cd linux-hardening-baseline
 ````
 
 Open the overview:
